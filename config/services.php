@@ -30,5 +30,9 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'iucn' => [
+        'token' => env('IUCN_API_TOKEN'),
+        'base_url' => env('IUCN_BASE_URL', 'https://api.iucnredlist.org/api/v4'),
+    ],
 
 ];
