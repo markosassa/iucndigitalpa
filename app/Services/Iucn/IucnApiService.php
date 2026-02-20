@@ -68,6 +68,18 @@ class IucnApiService
     }
 
     /**
+     * Lista systems
+     */
+    public function getSystems(): array
+    {
+        $ttl = config('iucn.cache.dashboard_ttl', 3600);
+
+        // Endpoint indicativo: adattalo a swagger se differente
+        $res = $this->get('/api/v4/systems', [], $ttl);
+
+        return $res['data'] ?? [];
+    }
+    /**
      * Assessments by system
      */
     public function getAssessmentsBySystem(string $systemKey, array $filters, int $page = 1, int $perPage = 20): array
