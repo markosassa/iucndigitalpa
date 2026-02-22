@@ -80,10 +80,22 @@ class IucnApiService
 
         return $res['data'] ?? [];
     }
+
+    public function getSingleSystem(string $systemKey): array
+    {
+        $ttl = config('iucn.cache.default_ttl', 300);
+
+        // Endpoint indicativo: adattalo a swagger se differente
+        $res = $this->get("/api/v4/systems/{$systemKey}", [], $ttl);
+    
+        return $res ?? [];
+    }
+
+    
     /**
      * Assessments by system
      */
-    public function getAssessmentsBySystem(string $systemKey, array $filters, int $page = 1, int $perPage = 20): array
+    public function getAssessmentsBySystem(string $systemKey, array $filters = null, int $page = 1, int $perPage = 20): array
     {
         $ttl = config('iucn.cache.default_ttl', 300);
 
@@ -91,15 +103,13 @@ class IucnApiService
             'page' => $page,
             'per_page' => $perPage,
             // systemKey: l’API potrebbe chiamarlo system o realm
-            'system' => $systemKey,
+            
         ];
 
-        // Filtri
-        if (!empty($filters['year'])) $query['year_published'] = (int)$filters['year'];
-        if (!empty($filters['pe'])) $query['possibly_extinct'] = 1;
-        if (!empty($filters['pew'])) $query['possibly_extinct_in_the_wild'] = 1;
+        //$query['code'] = $systemKey;
+        
 
-        $res = $this->get('/api/v4/assessments', $query, $ttl);
+        $res = $this->get("/api/v4/systems/{$systemKey}", $query, $ttl);
 
         $items = $res['data']['result'] ?? $res['data'] ?? [];
 

@@ -17,7 +17,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach ($systems["systems"] as $item)
 
-                <a href="#" class="system-card group">
+                <a href="{{ route('system', ['system' => $item['code']]) }}" class="system-card group">
                 <div class="bg-gradient-to-br from-green-500 to-emerald-600 text-white p-8 rounded-xl shadow-lg">
                     <h3 class="text-2xl font-bold mb-2">{{ $item["description"]["en"] }}</h3>
 
