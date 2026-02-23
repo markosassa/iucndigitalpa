@@ -74,7 +74,7 @@
                 </div>
                 </div>
                 <nav class="flex gap-2">
-                    <a href="#" class="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition text-sm font-semibold"> 🏠 Dashboard </a>
+                    <a href="{{ route('home') }}" class="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition text-sm font-semibold"> 🏠 Dashboard </a>
                     <a href="#" class="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition text-sm font-semibold"> ⭐ Preferiti </a>
                 </nav>
                 </div>

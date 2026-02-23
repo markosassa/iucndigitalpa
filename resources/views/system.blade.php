@@ -1,15 +1,14 @@
 @extends('layouts.app')
 @section('content')
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-8"><!-- Breadcrumb -->
-    <nav class="flex items-center gap-2 text-sm text-gray-600 mb-8 fade-in"><a href="/" class="text-teal-600 hover:text-teal-700 font-semibold">Dashboard</a> <span class="text-gray-400">/</span> <a href="#" class="text-teal-600 hover:text-teal-700 font-semibold">Sistemi</a> <span class="text-gray-400">/</span> <span class="text-gray-700 font-semibold">Terrestre</span>
-    </nav><!-- Card principale sistema -->
+
     <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8 card-hover">
      <div class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white p-6">
       <div class="flex items-center gap-3">
        <div class="w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center"><i class="fas fa-globe text-2xl"></i>
        </div>
        <div>
-        <h1 class="text-3xl font-bold">Terrestre</h1>
+        <h1 class="text-3xl font-bold">{{ $systemData['description']['en'] }}</h1>
         <p class="text-emerald-100 text-sm">Sistema di classificazione IUCN</p>
        </div>
       </div>
@@ -32,15 +31,41 @@
     </div><!-- Sezione Assessments -->
 
     <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8 card-hover">
-     
+
      <div class="card-body p-0"><!-- Tabella Assessments -->
-      <div class="overflow-x-auto">
+        <div class="bg-gradient-to-r from-emerald-100 to-teal-100 p-6 border-b border-gray-200">
+      <h3 class="text-lg font-bold text-gray-800 mb-4">🔍 Filtri di Ricerca</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"><!-- Filtro Anno -->
+       <div><label class="block text-sm font-semibold text-gray-700 mb-2">Anno di Pubblicazione</label> <input type="number" id="filter-year" placeholder="Es: 2023" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm">
+       </div><!-- Filtro Categoria -->
+       <div><label class="block text-sm font-semibold text-gray-700 mb-2">Categoria Conservazione</label> <select id="filter-category" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"> <option value="">Tutte le categorie</option> <option value="EX">Estinto (EX)</option> <option value="EW">Estinto in Natura (EW)</option> <option value="CR">In Pericolo Critico (CR)</option> <option value="EN">In Pericolo (EN)</option> <option value="VU">Vulnerabile (VU)</option> <option value="NT">Quasi Minacciato (NT)</option> <option value="LC">Minor Preoccupazione (LC)</option> <option value="DD">Dati Insufficienti (DD)</option> <option value="NE">Non Valutato (NE)</option> </select>
+       </div><!-- Filtro Possibile Estinto -->
+       <div><label class="block text-sm font-semibold text-gray-700 mb-2">Possibile Estinto</label> <select id="filter-possibly-extinct" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"> <option value="">Tutti</option> <option value="true">Estinto</option> <option value="false">Non estinto</option> </select>
+       </div><!-- Filtro Possibile Estinto in Natura -->
+       <div><label class="block text-sm font-semibold text-gray-700 mb-2">Estinto in Natura</label> <select id="filter-possibly-extinct-wild" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"> <option value="">Tutti</option> <option value="true">Estinto</option> <option value="false">Non estinto</option> </select>
+       </div>
+      </div><!-- Pulsanti Azione Filtri -->
+      <div class="flex gap-3 mt-4"><button id="btn-apply-filters" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-semibold">✓ Applica Filtri</button> <button id="btn-reset-filters" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition text-sm font-semibold">↻ Ripristina</button>
+      </div>
+     </div>
+     <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+       <h3 class="text-lg font-bold text-gray-800">📋 Valutazioni</h3><!-- Toggle Vista -->
+
+       <div class="flex items-center gap-4"><span class="text-sm font-semibold text-gray-700">Visualizzazione:</span>
+        <div class="toggle-switch" id="viewToggle">
+         <div class="toggle-icons"><span class="toggle-icon-left">📊</span> <span class="toggle-icon-right">🎴</span>
+         </div>
+         <div class="toggle-slider"></div>
+        </div>
+       </div>
+    </div>
+      <div id="table-view" class="d-none overflow-x-auto">
        <table class="w-full table-striped" id="assessments-table">
         <thead class="bg-gray-100 border-b border-gray-200">
          <tr>
           <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 cursor-pointer hover:bg-gray-200">ID Assessment</th>
           <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 cursor-pointer hover:bg-gray-200">Anno di pubblicazione</th>
-          <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 cursor-pointer hover:bg-gray-200">Possibile estitno</th>
+          <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 cursor-pointer hover:bg-gray-200">Possibile estinto</th>
           <th class="px-6 py-4 text-center text-sm font-bold text-gray-700 cursor-pointer hover:bg-gray-200">Possibile estinto in natura</th>
           <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 cursor-pointer hover:bg-gray-200">Categoria di conservazione</th>
           <th class="px-6 py-4 text-center text-sm font-bold text-gray-700">Link IUCN</th>
@@ -52,43 +77,95 @@
             @endphp
             @foreach ($assessmentsData as $assessment)
             <tr class="text-center py-8">
-                
-                <td class="text-center">{{ $assessment['assessment_id'] }}</td>            
-                <td class="text-center">{{ $assessment['year_published'] }}</td>            
-                <td class="text-center">{{ $assessment['possibly_extinct'] ? 'Estinto' : 'Non ancora estinto' }}</td>            
-                <td class="text-center">{{ $assessment['possibly_extinct_in_the_wild'] ? 'Estinto' : 'Non ancora estinto' }}</td>            
-                <td class="text-center">{!! $category->getCategory($assessment['red_list_category_code'])['class'] !!}</td>            
-                <td class="text-center"><a href="{{ $assessment['url'] }}" target="_blank" class="btn btn-sm btn-outline-primary">Vedi</a></td>            
-                
+
+                <td class="text-center">{{ $assessment['assessment_id'] }}</td>
+                <td class="text-center">{{ $assessment['year_published'] }}</td>
+                <td class="text-center">{{ $assessment['possibly_extinct'] ? 'Estinto' : 'Non ancora estinto' }}</td>
+                <td class="text-center">{{ $assessment['possibly_extinct_in_the_wild'] ? 'Estinto' : 'Non ancora estinto' }}</td>
+                <td class="text-center">{!! $category->getCategory($assessment['red_list_category_code'])['class'] !!}</td>
+                <td class="text-center"><a href="{{ $assessment['url'] }}" target="_blank" class="btn btn-sm btn-outline-primary">Vedi</a></td>
+
             </tr>
             @endforeach
-        
+
         </tbody>
        </table>
-      </div><!-- Paginazione -->
-      <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 d-none">
+
+      </div>
+      <div id="cards-view" class="p-6">
+            <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                @foreach ($assessmentsData as $assessment)
+                    <div class="assessment-card">
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <p class="text-xs text-gray-500">ID Assessment</p>
+                            <p class="text-lg font-bold text-gray-800">{{ $assessment['assessment_id'] }}</p>
+                            </div>
+                        <span>{!! $category->getCategory($assessment['red_list_category_code'])['class'] !!}</span>
+                    </div>
+
+                    <div class="space-y-2 mb-4 text-sm">
+                        <div>
+                            <p class="text-gray-600">Anno Pubblicazione</p>
+                            <p class="font-semibold text-gray-800">{{ $assessment['year_published'] }}</p>
+                        </div>
+
+                        <div class="flex gap-2">
+                        <div class="flex-1">
+                            <p class="text-gray-600 text-xs">Possibile Estinto</p>
+                            <p class="font-semibold text-red-600">
+                                {{ $assessment['possibly_extinct'] ? 'Estinto' : 'Non ancora estinto' }}
+                            </p>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-gray-600 text-xs">Estinto in Natura</p>
+                            <p class="font-semibold ${item.possibly_extinct_in_the_wild ? 'text-red-600' : 'text-green-600'}">
+                                {{ $assessment['possibly_extinct_in_the_wild'] ? 'Estinto' : 'Non ancora estinto' }}
+                            </p>
+                        </div>
+                        </div>
+                    </div>
+
+                    <a href="{{ $assessment['url'] }}" target="_blank" rel="noopener noreferrer" class="inline-block w-full text-center px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-semibold">
+                        🔗 Vedi su IUCN
+                    </a>
+                </div>
+                @endforeach
+
+            </div>
+        </div>
+      <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 ">
         <div class="flex flex-col md:flex-row items-center justify-between gap-4"><!-- Selezione risultati per pagina -->
             <div class="flex items-center gap-3">
-                <label for="per-page" class="text-sm font-semibold text-gray-700">Risultati per pagina:</label> 
+                <label for="per-page" class="text-sm font-semibold text-gray-700">Risultati per pagina:</label>
                 <select id="per-page" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
-                     <option value="10">10</option> <option value="25" selected>25</option>
-                      <option value="50">50</option> <option value="100">100</option>
+                     <option value="10" {{ ($headers['page-items'][0] == '10') ? 'selected' : ''; }}>10</option>
+                     <option value="20" {{ ($headers['page-items'][0] == '20') ? 'selected' : ''; }} >20</option>
+                      <option value="50" {{ ($headers['page-items'][0] == '50') ? 'selected' : ''; }}>50</option>
+                      <option value="100" {{ ($headers['page-items'][0] == '100') ? 'selected' : ''; }}>100</option>
                 </select>
             </div><!-- Pulsanti paginazione -->
             <div class="flex it ems-center gap-2">
-                <button id="btn-prev" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition text-sm font-semibold"> 
-                    <i class="fas fa-chevron-left mr-2"></i>Precedente </button>
+                @if ( $headers['current-page'][0] > 1)
+                 <a href="{{ route('system', ['system' => $systemData['code'], 'page'=> ($headers['current-page'][0] > 1) ? $headers['current-page'][0] -1 : 1 ]) }}" id="btn-prev" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition text-sm font-semibold">
+                    <i class="fas fa-chevron-left mr-2"></i>Precedente
+                </a>
+                @endif
+
                 <div id="pagination-info" class="px-4 py-2 bg-white rounded-lg border border-gray-300 text-sm font-semibold text-gray-700 min-w-[150px] text-center">
-                    Pagina 0 di 0
+                    Pagina {{ $headers['current-page'][0] }} di {{ $headers['total-pages'][0] }}
                 </div>
-                <button id="btn-next" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition text-sm font-semibold"> Successiva<i class="fas fa-chevron-right ml-2"></i> </button>
-            </div><!-- Indicatore pagine -->
-            <div id="pagination-pages" class="flex gap-1 flex-wrap"><!-- Pagine aggiunte dinamicamente -->
+                <a href="{{ route('system', ['system' => $systemData['code'], 'page'=> $headers['current-page'][0] +1 ]) }}" id="btn-next" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition text-sm font-semibold">
+                    Successiva<i class="fas fa-chevron-right ml-2"></i>
+                </a>
             </div>
+
        </div>
       </div>
      </div>
-    </div><!-- Legenda categorie IUCN -->
+    </div>
+
+    <!-- Legenda categorie IUCN -->
     <div class="bg-white rounded-xl shadow-lg overflow-hidden">
      <div class="bg-gradient-to-r from-emerald-100 to-teal-100 p-6 border-b border-gray-200">
       <h3 class="text-lg font-bold text-gray-800"><i class="fas fa-info-circle mr-2 text-teal-600"></i>Legenda Categorie IUCN Red List</h3>
@@ -96,7 +173,7 @@
      <div class="p-6">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
        <div class="flex items-center gap-3 p-3 bg-red-50 rounded-lg border border-red-200">
-        <span class="inline-block px-3 py-1 bg-red-600 text-white text-xs font-bold rounded">EX</span> 
+        <span class="inline-block px-3 py-1 bg-red-600 text-white text-xs font-bold rounded">EX</span>
         <span class="text-sm text-gray-700"><strong>Extinct</strong> - Estinto</span>
        </div>
        <div class="flex items-center gap-3 p-3 bg-red-50 rounded-lg border border-red-200">
@@ -126,7 +203,7 @@
       </div>
      </div>
     </div>s
-    
+
   </main><!-- Footer -->
 
 
