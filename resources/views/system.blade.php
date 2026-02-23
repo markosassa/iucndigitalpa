@@ -183,7 +183,7 @@
                 </div><!-- Pulsanti paginazione -->
                 <div class="flex it ems-center gap-2">
                     @if ( $headers['current-page'][0] > 1)
-                    <a href="{{ route('system', ['system' => $systemData['code'], 'page'=> ($headers['current-page'][0] > 1) ? $headers['current-page'][0] -1 : 1 ]) }}" id="btn-prev" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition text-sm font-semibold">
+                    <a href="{{ route('system', ['system' => $systemData['code'], 'page'=> ($headers['current-page'][0] > 1) ? $headers['current-page'][0] -1 : 1 , 'per_page'=> isset($_GET['per_page']) ? $_GET['per_page'] : '']) }}" id="btn-prev" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition text-sm font-semibold">
                         <i class="fas fa-chevron-left mr-2"></i>Precedente
                     </a>
                     @endif

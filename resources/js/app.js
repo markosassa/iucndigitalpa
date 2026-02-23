@@ -67,11 +67,40 @@ $(document).ready(function(){
     });
 
 
-    $('#favorite-btn').on('click', function(){
-        console.log($(this).data('sistaxa'));
+    $('#favorite-btn').on('click', function(e){
+       e.preventDefault();
+
+        const $btn = $(this);
+        const assessmentId = parseInt($btn.data('sistaxa'), 10);
+
+        $.ajax({
+            url: '/favorites/toggle',
+            method: 'POST',
+            data: { assessment_id: assessmentId },
+            success: function (res) {
+                if (!res || !res.ok) return;
+
+                if (res.favorited) {
+                    $btn.text('❤️');
+                } else {
+                    $btn.text('🤍');
+                }
+            },
+            error: function (xhr) {
+                console.error(xhr.responseText || xhr.statusText);
+            }
+        });
     })
+    const $btn = $('#favorite-btn');
+    if (!$btn.length) return;
+
+    const assessmentId = parseInt($btn.data('sistaxa'), 10);
+
+    $.get('/favorites/has', { assessment_id: assessmentId }, function (res) {
+        if (res && res.ok && res.favorited) $btn.text('❤️');
+    });
 
 
-
+    
 
 });

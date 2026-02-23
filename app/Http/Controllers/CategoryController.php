@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     private array $categories;
+    // Inizializziamo le categorie con i dati fissi, includendo l'ID, il nome, il significato e la classe CSS per il badge colorato.
     public function __construct()
     {
         $this->categories = [
@@ -22,13 +23,13 @@ class CategoryController extends Controller
         ];
 
     }
+    // Restituisce tutte le categorie in formato JSON
     public function getCategories()
     {
-        // Logica per ottenere le categorie (es. da un database o da un servizio esterno)
         $categories = $this->categories;
         return response()->json($categories);
     }
-
+    // Restituisce una categoria specifica in base all'ID, se non trovata restituisce una categoria di default con l'ID richiesto e un badge grigio.
     public function getCategory($id)
     {
         // Logica per ottenere una categoria specifica

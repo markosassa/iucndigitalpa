@@ -9,3 +9,8 @@ Route::get('/countries',[App\Http\Controllers\ApiController::class,'getSingleCou
 Route::get('/dettaglio-specie',[App\Http\Controllers\ApiController::class,'getTaxaSis'])->name('taxasis');
 Route::get('/dettaglio-valutazione',[App\Http\Controllers\ApiController::class,'getSingleAssessment'])->name('valutazione');
 
+use App\Http\Controllers\FavoriteController;
+
+Route::post('/favorites/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
+Route::get('/favorites/has', [FavoriteController::class, 'has'])->name('favorites.has'); 
+Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites');     // opzionale

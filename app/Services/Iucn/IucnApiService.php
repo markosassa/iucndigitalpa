@@ -11,6 +11,8 @@ class IucnApiService
     private string $baseUrl;
     private string $token;
 
+    // Nel costruttore, inizializziamo la base URL e il token di autenticazione per l'API IUCN.
+    // Il token viene prelevato dalle variabili d'ambiente, e se non è presente viene lanciata un'eccezione per evitare errori di autenticazione nelle richieste
     public function __construct()
     {
         $this->baseUrl = rtrim(config('iucn.base_url'), '/');
@@ -22,9 +24,7 @@ class IucnApiService
         }
     }
 
-    /**
-     * Wrapper GET con cache + ritorno (data + headers)
-     */
+    // Metodo generico per effettuare richieste GET con caching
     private function get(string $endpoint, array $query = [], int $ttl = 300): array
     {
         $cacheKey = $this->cacheKey($endpoint, $query);
@@ -47,6 +47,7 @@ class IucnApiService
             ];
         });
     }
+    // Genera una chiave di cache unica basata sull'endpoint e sui parametri della query, ordinando i parametri per garantire coerenza.
 
     private function cacheKey(string $endpoint, array $query): string
     {
@@ -55,9 +56,7 @@ class IucnApiService
         return "iucn:" . Str::slug($endpoint, '_') . ":" . $hash;
     }
 
-    /**
-     * Lista countries
-     */
+    // Metodo per ottenere la lista dei paesi, con caching per 1 ora, chiave fissa 'dashboard.countries'. Restituisce un array di paesi.
     public function getCountries(): array
     {
         $ttl = config('iucn.cache.dashboard_ttl', 3600);
@@ -68,9 +67,7 @@ class IucnApiService
         return $res['data'] ?? [];
     }
 
-    /**
-     * Lista systems
-     */
+    // Metodo per ottenere la lista dei sistemi, con caching per 1 ora, chiave fissa 'dashboard.systems'. Restituisce un array di sistemi.
     public function getSystems(): array
     {
         $ttl = config('iucn.cache.dashboard_ttl', 3600);
@@ -81,9 +78,7 @@ class IucnApiService
     }
 
 
-    /**
-     * Assessments by system
-     */
+    // Metodo per ottenere le valutazioni associate a un sistema specifico, con caching per 5 minuti, chiave basata su system, page, per_page e filtri (year, pe, pew). Restituisce un array di valutazioni e i dati del sistema.
     public function getAssessmentsBySystem(string $systemKey, array $filters = null, int $page = 1, int $perPage = 20): array  {
         $ttl = config('iucn.cache.default_ttl', 300);
 
@@ -111,20 +106,23 @@ class IucnApiService
         ];
     }
 
-
+     // Metodo per ottenere le valutazioni associate a un paese specifico, con caching per 5 minuti, chiave basata su country, page, per_page e filtri (year, pe, pew). Restituisce un array di valutazioni e i dati del paese.
     public function getAssessmentsByCountry(string $iso2, array $filters = null, int $page = 1, int $perPage = 20): array
     {
         $ttl = config('iucn.cache.default_ttl', 300);
 
         $query = [
-            'code'=>strtoupper($iso2),
             'page' => $page,
             'per_page' => $perPage,
 
         ];
 
+        if (!empty($filters['year'])) $query['year_published'] = (int)$filters['year'];
+        if (!empty($filters['pe'])) $query['possibly_extinct'] = $filters['pe'];
+        if (!empty($filters['pew'])) $query['possibly_extinct_in_the_wild'] = $filters['pew'];
 
-        $res = $this->get('/api/v4/countries/'.$iso2, $query, $ttl);
+
+        $res = $this->get('/api/v4/countries/'.strtoupper($iso2), $query, $ttl);
 
         $items = $res['data']['result'] ?? $res['data'] ?? [];
 
@@ -137,7 +135,7 @@ class IucnApiService
         ];
     }
 
-
+    // Metodo per ottenere i dettagli di una valutazione specifica, con caching per 5 minuti, chiave basata su assessmentId. Restituisce un array con i dati della valutazione.
     public function getAssessment(string $assessmentId): array
     {
         $ttl = config('iucn.cache.default_ttl', 300);
@@ -147,7 +145,7 @@ class IucnApiService
         return $res['data'] ?? [];
     }
 
-
+    // Metodo per ottenere i dettagli di una specie specifica tramite il suo SIS Taxon ID, con caching per 5 minuti, chiave basata su sisTaxonId. Restituisce un array con i dati della specie.
     public function getTaxonSis(string $sisTaxonId): array
     {
         $ttl = config('iucn.cache.default_ttl', 300);
@@ -157,7 +155,7 @@ class IucnApiService
         return $res['data'] ?? [];
     }
 
-
+    // Metodo per ottenere informazioni generali sull'API e statistiche, con caching per 24 ore, chiave fissa 'footer_info'. Restituisce un array con le informazioni da visualizzare nel footer.
     public function getFooterInfo(): array
     {
         $ttl = config('iucn.cache.footer_ttl', 86400);
