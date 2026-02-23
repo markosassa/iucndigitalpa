@@ -61,6 +61,7 @@
 
     </head>
     <body class="h-full bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50">
+
         <div class="app-wrapper w-full"><!-- Header -->
             <header class="bg-gradient-to-r from-emerald-700 via-teal-600 to-cyan-700 text-white shadow-lg">
                 <div class="max-w-7xl mx-auto px-4 py-6">

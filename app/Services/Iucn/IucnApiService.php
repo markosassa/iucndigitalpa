@@ -75,39 +75,28 @@ class IucnApiService
     {
         $ttl = config('iucn.cache.dashboard_ttl', 3600);
 
-        // Endpoint indicativo: adattalo a swagger se differente
         $res = $this->get('/api/v4/systems', [], $ttl);
 
         return $res['data'] ?? [];
     }
 
-    public function getSingleSystem(string $systemKey): array
-    {
-        $ttl = config('iucn.cache.default_ttl', 300);
 
-        // Endpoint indicativo: adattalo a swagger se differente
-        $res = $this->get("/api/v4/systems/{$systemKey}", [], $ttl);
-    
-        return $res ?? [];
-    }
-
-    
     /**
      * Assessments by system
      */
-    public function getAssessmentsBySystem(string $systemKey, array $filters = null, int $page = 1, int $perPage = 20): array
-    {
+    public function getAssessmentsBySystem(string $systemKey, array $filters = null, int $page = 1, int $perPage = 20): array  {
         $ttl = config('iucn.cache.default_ttl', 300);
 
         $query = [
             'page' => $page,
             'per_page' => $perPage,
-            // systemKey: l’API potrebbe chiamarlo system o realm
-            
+
         ];
 
+        if (!empty($filters['year'])) $query['year_published'] = (int)$filters['year'];
+        if (!empty($filters['pe'])) $query['possibly_extinct'] = $filters['pe'];
+        if (!empty($filters['pew'])) $query['possibly_extinct_in_the_wild'] = $filters['pew'];
         //$query['code'] = $systemKey;
-        
 
         $res = $this->get("/api/v4/systems/{$systemKey}", $query, $ttl);
 
@@ -122,24 +111,20 @@ class IucnApiService
         ];
     }
 
-    /**
-     * Assessments by country
-     */
-    public function getAssessmentsByCountry(string $iso2, array $filters, int $page = 1, int $perPage = 20): array
+
+    public function getAssessmentsByCountry(string $iso2, array $filters = null, int $page = 1, int $perPage = 20): array
     {
         $ttl = config('iucn.cache.default_ttl', 300);
 
         $query = [
+            'code'=>strtoupper($iso2),
             'page' => $page,
             'per_page' => $perPage,
-            'country' => strtoupper($iso2),
+
         ];
 
-        if (!empty($filters['year'])) $query['year_published'] = (int)$filters['year'];
-        if (!empty($filters['pe'])) $query['possibly_extinct'] = 1;
-        if (!empty($filters['pew'])) $query['possibly_extinct_in_the_wild'] = 1;
 
-        $res = $this->get('/api/v4/assessments', $query, $ttl);
+        $res = $this->get('/api/v4/countries/'.$iso2, $query, $ttl);
 
         $items = $res['data']['result'] ?? $res['data'] ?? [];
 
@@ -152,21 +137,17 @@ class IucnApiService
         ];
     }
 
-    /**
-     * Dettaglio assessment
-     */
+
     public function getAssessment(string $assessmentId): array
     {
         $ttl = config('iucn.cache.default_ttl', 300);
 
-        $res = $this->get("/api/v4/assessments/{$assessmentId}", [], $ttl);
+        $res = $this->get("/api/v4/assessment/".$assessmentId, [], $ttl);
 
         return $res['data'] ?? [];
     }
 
-    /**
-     * Dettaglio taxa/sis
-     */
+
     public function getTaxonSis(string $sisTaxonId): array
     {
         $ttl = config('iucn.cache.default_ttl', 300);
@@ -176,9 +157,7 @@ class IucnApiService
         return $res['data'] ?? [];
     }
 
-    /**
-     * Footer info (cache 1 giorno)
-     */
+
     public function getFooterInfo(): array
     {
         $ttl = config('iucn.cache.footer_ttl', 86400);

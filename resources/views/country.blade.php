@@ -10,10 +10,10 @@
         <div class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white p-6">
             <div class="flex items-center gap-3">
                 <div class="w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-globe text-2xl"></i>
+                    <i class="fi fi-{{ strtolower($countryData['code']) }}"></i>
                 </div>
                 <div>
-                    <h1 class="text-3xl font-bold">{{ $systemData['description']['en'] }}</h1>
+                    <h1 class="text-3xl font-bold">{{ $countryData['description']['en'] }}</h1>
                     <p class="text-emerald-100 text-sm">Sistema di classificazione IUCN</p>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                             {{ $headers['total-count'][0] }}
                     </div>
                     <div class="text-xs text-gray-500 mt-2">
-                        Valutazioni totali nella nazione
+                        Valutazioni totali nel sistema
                     </div>
                 </div>
             </div>
@@ -39,40 +39,34 @@
 
         <div class="card-body p-0"><!-- Tabella Assessments -->
             <div class="bg-gradient-to-r from-emerald-100 to-teal-100 p-6 border-b border-gray-200">
-                <form action="/systems" method="GET">
-
-
-                    <h3 class="text-lg font-bold text-gray-800 mb-4">🔍 Filtri di Ricerca</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"><!-- Filtro Anno -->
-                         <input type="hidden" name="system" value="{{ request('system') }}">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Anno di Pubblicazione</label>
-                            <input type="number" id="filter-year" name="published_year" placeholder="Es: 2023" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm">
-                        </div>
-                        <!-- Filtro Possibile Estinto -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Possibile Estinto</label>
-                            <select id="filter-possibly-extinct" name="pe" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm">
-                                <option value="">Tutti</option>
-                                <option value="true">Estinto</option>
-                                <option value="false">Non estinto</option>
-                            </select>
-                        </div>
-                        <!-- Filtro Possibile Estinto in Natura -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Estinto in Natura</label>
-                            <select id="filter-possibly-extinct-wild" name="pew" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm">
-                                <option value="">Tutti</option>
-                                <option value="true">Estinto</option>
-                                <option value="false">Non estinto</option>
-                            </select>
-                        </div>
-                    </div><!-- Pulsanti Azione Filtri -->
-                    <div class="flex gap-2 mt-4">
-                        <button type="submit" id="btn-apply-filters" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-semibold">✓ Applica Filtri</button>
-                        <button id="btn-reset-filters" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition text-sm font-semibold">↻ Ripristina</button>
+                <h3 class="text-lg font-bold text-gray-800 mb-4">🔍 Filtri di Ricerca</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"><!-- Filtro Anno -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Anno di Pubblicazione</label>
+                        <input type="number" id="filter-year" placeholder="Es: 2023" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm">
                     </div>
-                 </form>
+                    <!-- Filtro Possibile Estinto -->
+                    <div><label class="block text-sm font-semibold text-gray-700 mb-2">Possibile Estinto</label>
+                        <select id="filter-possibly-extinct" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm">
+                            <option value="">Tutti</option>
+                            <option value="true">Estinto</option>
+                            <option value="false">Non estinto</option>
+                        </select>
+                    </div>
+                    <!-- Filtro Possibile Estinto in Natura -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Estinto in Natura</label>
+                        <select id="filter-possibly-extinct-wild" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm">
+                            <option value="">Tutti</option>
+                            <option value="true">Estinto</option>
+                            <option value="false">Non estinto</option>
+                        </select>
+                    </div>
+                </div><!-- Pulsanti Azione Filtri -->
+                <div class="flex gap-3 mt-4">
+                    <button id="btn-apply-filters" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-semibold">✓ Applica Filtri</button>
+                    <button id="btn-reset-filters" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition text-sm font-semibold">↻ Ripristina</button>
+                </div>
             </div>
         <div class="p-6 border-b border-gray-200 flex items-center justify-between">
             <h3 class="text-lg font-bold text-gray-800">📋 Valutazioni</h3><!-- Toggle Vista -->
@@ -89,7 +83,7 @@
                 </div>
             </div>
         </div>
-        <div id="table-view" class=" overflow-x-auto">
+        <div id="table-view" class="d-none overflow-x-auto">
             <table class="w-full table-striped" id="assessments-table">
                     <thead class="bg-gray-100 border-b border-gray-200">
                         <tr>
@@ -99,7 +93,7 @@
                             <th class="px-6 py-4 text-center text-sm font-bold text-gray-700 cursor-pointer hover:bg-gray-200">Possibile estinto in natura</th>
                             <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 cursor-pointer hover:bg-gray-200">Categoria di conservazione</th>
                             <th class="px-6 py-4 text-center text-sm font-bold text-gray-700">Link IUCN</th>
-                            <th class="px-6 py-4 text-center text-sm font-bold text-gray-700">Dettaglio</th>
+                            <th class="px-6 py-4 text-center text-sm font-bold text-gray-700">Dettaglio Specie</th>
                         </tr>
                     </thead>
                     <tbody id="assessments-tbody">
@@ -107,15 +101,17 @@
                         @foreach ($assessmentsData as $assessment)
                         <tr class="text-center py-8">
 
-                            <td class="text-center">{{ $assessment['assessment_id'] }}</td>
-                            <td class="text-center">{{ $assessment['year_published'] }}</td>
-                            <td class="text-center">{{ $assessment['possibly_extinct'] ? 'Estinto' : 'Non ancora estinto' }}</td>
-                            <td class="text-center">{{ $assessment['possibly_extinct_in_the_wild'] ? 'Estinto' : 'Non ancora estinto' }}</td>
-                            <td class="text-center">{!! $category->getCategory($assessment['red_list_category_code'])['class'] !!}</td>
-                            <td class="text-center"><a href="{{ $assessment['url'] }}" target="_blank" class="btn btn-sm btn-outline-primary">Vedi</a></td>
+                            <td class="text-center">{{ data_get($assessment, 'assessment_id') }}</td>
+                            <td class="text-center">{{ data_get($assessment,'year_published')}}</td>
+                            <td class="text-center">{{ data_get($assessment,'possibly_extinct')? 'Estinto' : 'Non ancora estinto' }}</td>
+                            <td class="text-center">{{ data_get($assessment,'possibly_extinct_in_the_wild')? 'Estinto' : 'Non ancora estinto' }}</td>
+                            <td class="text-center">{!! $category->getCategory(data_get($assessment,'red_list_category_code'))['class']!!}</td>
+                            <td class="text-center"><a href="{{ data_get($assessment,'url')}}" target="_blank" class="btn btn-sm btn-outline-primary">Vedi</a></td>
                             @if (array_key_exists('sis_taxon_id',$assessment))
-                                <td class="text-center"><a href="{{ route('taxasis', ['sis_taxon_id' => $assessment['sis_taxon_id']] ) }}" target="_blank" class="btn btn-sm btn-outline-primary">Vedi</a></td>
+                                <td class="text-center"><a href="{{ route('taxasis', ['sis_taxon_id' => data_get($assessment,'sis_taxon_id')]) }}" target="_blank" class="btn btn-sm btn-outline-primary">Vedi</a></td>
                             @endif
+
+
 
                         </tr>
                         @endforeach
@@ -124,47 +120,46 @@
             </table>
 
         </div>
-        <div id="cards-view" class="d-none p-6">
+        <div id="cards-view" class="p-6">
             <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 @foreach ($assessmentsData as $assessment)
                     <div class="assessment-card">
                     <div class="flex justify-between items-start mb-3">
                         <div>
                             <p class="text-xs text-gray-500">ID Assessment</p>
-                            <p class="text-lg font-bold text-gray-800">{{ $assessment['assessment_id'] }}</p>
+                            <p class="text-lg font-bold text-gray-800">{{  data_get($assessment,'assessment_id') }}</p>
                             </div>
-                        <span>{!! $category->getCategory($assessment['red_list_category_code'])['class'] !!}</span>
+                        <span>{!! $category->getCategory( data_get($assessment,'red_list_category_code'))['class'] !!}</span>
                     </div>
 
                     <div class="space-y-2 mb-4 text-sm">
                         <div>
                             <p class="text-gray-600">Anno Pubblicazione</p>
-                            <p class="font-semibold text-gray-800">{{ $assessment['year_published'] }}</p>
+                            <p class="font-semibold text-gray-800">{{  data_get($assessment,'year_published') }}</p>
                         </div>
 
                         <div class="flex gap-2">
                         <div class="flex-1">
                             <p class="text-gray-600 text-xs">Possibile Estinto</p>
                             <p class="font-semibold text-red-600">
-                                {{ $assessment['possibly_extinct'] ? 'Estinto' : 'Non ancora estinto' }}
+                                {{  data_get($assessment,'possibly_extinct') ? 'Estinto' : 'Non ancora estinto' }}
                             </p>
                         </div>
                         <div class="flex-1">
                             <p class="text-gray-600 text-xs">Estinto in Natura</p>
                             <p class="font-semibold ${item.possibly_extinct_in_the_wild ? 'text-red-600' : 'text-green-600'}">
-                                {{ $assessment['possibly_extinct_in_the_wild'] ? 'Estinto' : 'Non ancora estinto' }}
+                                {{  data_get($assessment,'possibly_extinct_in_the_wild') ? 'Estinto' : 'Non ancora estinto' }}
                             </p>
                         </div>
                         </div>
                     </div>
 
-                    <a href="{{ $assessment['url'] }}" target="_blank" rel="noopener noreferrer" class="inline-block w-full text-center px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-semibold">
+                    <a href="{{  data_get($assessment,'url') }}" target="_blank" rel="noopener noreferrer" class="inline-block w-full text-center px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-semibold">
                         🔗 Vedi su IUCN
                     </a>
-                    @if (array_key_exists('sis_taxon_id',$assessment))
-                        <a href="{{ route('taxasis', ['sis_taxon_id' => $assessment['sis_taxon_id']] ) }}" rel="noopener noreferrer" class="mt-2 inline-block w-full text-center px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-semibold">Dettaglio</a>
+                     @if (array_key_exists('sis_taxon_id',$assessment))
+                        <a href="{{ route('taxasis', ['sis_taxon_id' =>  data_get($assessment,'sis_taxon_id')] ) }}" rel="noopener noreferrer" class="mt-2 inline-block w-full text-center px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-semibold">Dettaglio</a>
                     @endif
-
                 </div>
                 @endforeach
 
@@ -183,7 +178,7 @@
                 </div><!-- Pulsanti paginazione -->
                 <div class="flex it ems-center gap-2">
                     @if ( $headers['current-page'][0] > 1)
-                    <a href="{{ route('system', ['system' => $systemData['code'], 'page'=> ($headers['current-page'][0] > 1) ? $headers['current-page'][0] -1 : 1 ]) }}" id="btn-prev" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition text-sm font-semibold">
+                    <a href="{{ route('country', ['country' => $countryData['code'], 'page'=> ($headers['current-page'][0] > 1) ? $headers['current-page'][0] -1 : 1 ]) }}" id="btn-prev" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition text-sm font-semibold">
                         <i class="fas fa-chevron-left mr-2"></i>Precedente
                     </a>
                     @endif
@@ -191,8 +186,7 @@
                     <div id="pagination-info" class="px-4 py-2 bg-white rounded-lg border border-gray-300 text-sm font-semibold text-gray-700 min-w-[150px] text-center">
                         Pagina {{ $headers['current-page'][0] }} di {{ $headers['total-pages'][0] }}
                     </div>
-                    <a href="{{ route('system', ['system' => $systemData['code'], 'page'=> $headers['current-page'][0]+1, 'per_page'=> isset($_GET['per_page']) ? $_GET['per_page'] : '' ]) }}"
-                         id="btn-next" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition text-sm font-semibold">
+                    <a href="{{ route('country', ['country' => $countryData['code'], 'page'=> $headers['current-page'][0] +1 ]) }}" id="btn-next" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition text-sm font-semibold">
                         Successiva<i class="fas fa-chevron-right ml-2"></i>
                     </a>
                 </div>

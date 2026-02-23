@@ -23,7 +23,7 @@
 
                     <div class="flex items-center gap-2 text-green-200 group-hover:translate-x-2 transition-transform">
                         <span class="text-lg">→</span>
-                        <span class="text-sm font-semibold">Show assessments</span>
+                        <span class="text-sm font-semibold">Guarda valutazioni</span>
                     </div>
                 </div>
             </a>
@@ -50,9 +50,9 @@
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-h-96 overflow-y-auto">
                 <!-- Country Item Template -->
                 @foreach ($countries["countries"] as $item)
-                <a href="#" class="country-badge group">
+                <a href="{{ route('country', ['country' => $item['code']]) }}" class="country-badge group">
                     <div class="flex flex-col items-center p-4 rounded-lg bg-gray-50 hover:bg-emerald-50 transition-colors border border-gray-200 hover:border-emerald-400">
-                                               <span class="fi fi-{{ strtolower($item['code']) }}"></span>
+                        <span class="fi fi-{{ strtolower($item['code']) }}"></span>
 
                         <span class="text-sm font-medium text-gray-700 text-center truncate">{{ $item["description"]["en"] }}</span>
                         <span class="text-xs text-gray-400 mt-1">{{ $item["code"] }}</span>

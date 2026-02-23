@@ -24,17 +24,14 @@ class IucnPaginator
         // x-per-page: 20
         // x-page: 1
         // link: <...page=2>; rel="next", <...page=1>; rel="prev"
-        $total = self::intOrNull($h['x-total-count'] ?? $h['total'] ?? null);
+
+        $total = self::intOrNull($h['total-count'] ?? $h['total'] ?? null);
         $perPageFromHeader = self::intOrNull($h['x-per-page'] ?? $h['per-page'] ?? null);
         $pageFromHeader = self::intOrNull($h['x-page'] ?? $h['page'] ?? null);
 
         if ($perPageFromHeader) $perPage = $perPageFromHeader;
         if ($pageFromHeader) $page = $pageFromHeader;
 
-        $links = self::parseLinkHeader($h['link'] ?? null);
-
-        $hasNext = isset($links['next']) ? true : null;
-        $hasPrev = isset($links['prev']) ? true : null;
 
         // fallback calcolo hasNext se abbiamo total
         if ($total !== null) {
@@ -47,32 +44,10 @@ class IucnPaginator
             'page' => $page,
             'per_page' => $perPage,
             'total' => $total,
-            'has_next' => $hasNext ?? false,
-            'has_prev' => $hasPrev ?? ($page > 1),
-            'next_page' => ($hasNext ?? false) ? ($page + 1) : null,
-            'prev_page' => ($hasPrev ?? false) ? ($page - 1) : null,
-            'links' => $links,
+
         ];
     }
 
-    private static function parseLinkHeader(?string $linkHeader): array
-    {
-        if (!$linkHeader) return [];
-
-        $result = [];
-        $parts = explode(',', $linkHeader);
-
-        foreach ($parts as $part) {
-            // <url>; rel="next"
-            if (preg_match('/<([^>]+)>;\s*rel="([^"]+)"/', trim($part), $m)) {
-                $url = $m[1];
-                $rel = $m[2];
-                $result[$rel] = $url;
-            }
-        }
-
-        return $result;
-    }
 
     private static function intOrNull($v): ?int
     {

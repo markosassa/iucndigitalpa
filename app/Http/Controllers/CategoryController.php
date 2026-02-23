@@ -33,7 +33,9 @@ class CategoryController extends Controller
     {
         // Logica per ottenere una categoria specifica
         $category = collect($this->categories)->firstWhere('id', $id);
-
-        return $category; 
+        if($category == null){
+            return ['id' => $id, 'name' => $id,'meaning' => '', 'class'=>'<span class="inline-block px-3 py-1 bg-gray-600 text-white text-xs font-bold rounded">'.$id.'</span> '];
+        }
+        return $category;
     }
 }
