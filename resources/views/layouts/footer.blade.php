@@ -1,14 +1,19 @@
+@php
+    use \App\Services\Iucn\IucnApiService;
+    $iucnFooter = new IucnApiService();
+    $footerInfo = $iucnFooter->getFooterInfo();
+@endphp
 <footer class="bg-gray-800 text-white mt-auto">
     <div class="max-w-7xl mx-auto px-4 py-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
             <div>
                 <h4 class="font-bold text-emerald-400 mb-3">📱 Informazioni API</h4>
-                <p class="text-sm text-gray-300">Versione API: <span class="font-semibold">4.0.0</span></p>
-                <p class="text-sm text-gray-300">Red List Version: <span class="font-semibold">2024-1</span></p>
+                <p class="text-sm text-gray-300">Versione API: <span class="font-semibold">{{ $footerInfo['api_version'] }}</span></p>
+                <p class="text-sm text-gray-300">Red List Version: <span class="font-semibold">{{ $footerInfo['red_list_version'] }}</span></p>
             </div>
             <div>
                 <h4 class="font-bold text-emerald-400 mb-3">📊 Statistiche</h4>
-                <p class="text-sm text-gray-300">Specie Censite: <span class="font-semibold">157,190</span></p>
+                <p class="text-sm text-gray-300">Specie Censite: <span class="font-semibold">{{ $footerInfo['species_count'] }}</span></p>
                 <p class="text-sm text-gray-300">Ultimo Aggiornamento: <span class="font-semibold">2024-01-15</span></p>
             </div>
             <div>

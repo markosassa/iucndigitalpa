@@ -146,7 +146,7 @@ class IucnApiService
     }
 
     // Metodo per ottenere i dettagli di una specie specifica tramite il suo SIS Taxon ID, con caching per 5 minuti, chiave basata su sisTaxonId. Restituisce un array con i dati della specie.
-    public function getTaxonSis(string $sisTaxonId): array
+    public function getTaxonSis(string $sisTaxonId, array $filters = null, int $page = 1, int $perPage = 20): array
     {
         $ttl = config('iucn.cache.default_ttl', 300);
 
@@ -160,14 +160,13 @@ class IucnApiService
     {
         $ttl = config('iucn.cache.footer_ttl', 86400);
 
-        // Endpoint indicativi: verifica swagger
-        $api = $this->get('/api/v4/info', [], $ttl);
-        $stats = $this->get('/api/v4/stats', [], $ttl);
-
+        $api = $this->get('/api/v4/information/api_version', [], $ttl);
+        $stats = $this->get('/api/v4/statistics/count', [], $ttl);
+        $redlist = $this->get('/api/v4/information/red_list_version', [], $ttl);
         return [
             'api_version' => $api['data']['api_version'] ?? null,
-            'red_list_version' => $api['data']['red_list_version'] ?? null,
-            'species_count' => $stats['data']['species_count'] ?? null,
+            'red_list_version' => $redlist['data']['red_list_version'] ?? null,
+            'species_count' => $stats['data']['count'] ?? null,
         ];
     }
 }

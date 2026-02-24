@@ -39,18 +39,16 @@ class FavoriteController extends Controller
     // Toggle: se l'assessment_id è già nei preferiti, lo rimuove; altrimenti lo aggiunge. Restituisce lo stato aggiornato (favorited: true/false) e la data di aggiunta/rimozione.
     public function toggle(Request $request)
     {
-        $request->validate([
-            'assessment_id' => ['required', 'integer', 'min:1'],
-        ]);
+
 
         $this->ensureDbExists();
 
         $assessmentId = (int) $request->input('assessment_id');
-
+        $scientific_name =  $request->input('scientific_name');
         // Timestamp con timezone Europe/Rome (config('app.timezone') di solito è già Europe/Rome)
         $now = Carbon::now()->toIso8601String();
 
-        $result = $this->withLock(function (&$db) use ($assessmentId, $now) {
+        $result = $this->withLock(function (&$db) use ($assessmentId, $scientific_name, $now) {
             $db = $this->normalizeDb($db);
 
             // Cerca
@@ -60,6 +58,7 @@ class FavoriteController extends Controller
                 // Aggiunge
                 $db['favorites'][] = [
                     'assessment_id' => $assessmentId,
+                    'scientific_name'=>$scientific_name,
                     'added_at' => $now,
                 ];
 
@@ -119,7 +118,7 @@ class FavoriteController extends Controller
         return view('preferiti', compact('favorites')  );
     }
 
-    // --- HELPERS --- 
+    // --- HELPERS ---
     // Questi metodi aiutano a gestire i preferiti, cercando per assessment_id e normalizzando la struttura del file JSON.
     private function findIndex(array $favorites, int $assessmentId): int
     {
@@ -157,7 +156,7 @@ class FavoriteController extends Controller
         return $db;
     }
 
-    // Nota: i metodi readDb, writeDb e withLock sono implementati con file locking per evitare race condition in caso di richieste concorrenti. 
+    // Nota: i metodi readDb, writeDb e withLock sono implementati con file locking per evitare race condition in caso di richieste concorrenti.
     // In un'applicazione reale, si potrebbe considerare l'uso di un database o di un sistema di caching più robusto per gestire i preferiti.
     private function readDb(): array
     {

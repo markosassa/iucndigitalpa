@@ -70,13 +70,14 @@ $(document).ready(function(){
     $('#favorite-btn').on('click', function(e){
        e.preventDefault();
 
-        const $btn = $(this);
-        const assessmentId = parseInt($btn.data('sistaxa'), 10);
+        const btn = $(this);
+        const assessmentId = parseInt(btn.data('sistaxa'), 10);
+        const scname = btn.data('scname');
 
         $.ajax({
             url: '/favorites/toggle',
             method: 'POST',
-            data: { assessment_id: assessmentId },
+            data: { assessment_id: assessmentId, scientific_name:scname },
             success: function (res) {
                 if (!res || !res.ok) return;
 
@@ -101,6 +102,6 @@ $(document).ready(function(){
     });
 
 
-    
+
 
 });

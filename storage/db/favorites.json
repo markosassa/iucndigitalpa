@@ -1,12 +1,19 @@
 {
     "favorites": [
         {
-            "assessment_id": 10803,
-            "added_at": "2026-02-23T20:13:19+00:00"
+            "assessment_id": 12835,
+            "scientific_name": "Marmota marmota",
+            "added_at": "2026-02-24T12:25:31+00:00"
         },
         {
             "assessment_id": 10041,
-            "added_at": "2026-02-23T20:12:52+00:00"
+            "scientific_name": "Heosemys annandalii",
+            "added_at": "2026-02-24T11:49:52+00:00"
+        },
+        {
+            "assessment_id": 10803,
+            "scientific_name": "Iguanognathus werneri",
+            "added_at": "2026-02-24T11:48:17+00:00"
         }
     ]
 }

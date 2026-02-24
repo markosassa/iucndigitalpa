@@ -70,32 +70,6 @@
     </section>
 
 
-    <!-- Quick Stats Section -->
-    <section class="mb-12">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">📊 Statistiche Rapide</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-emerald-600">
-                <h3 class="text-gray-600 text-sm font-semibold mb-2">Specie Censite</h3>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-4xl font-bold text-emerald-600">157K</span>
-                    <span class="text-gray-500 text-sm">specie</span>
-                </div>
-            </div>
-            <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-red-600">
-                <h3 class="text-gray-600 text-sm font-semibold mb-2">Specie in Pericolo</h3>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-4xl font-bold text-red-600">42K</span>
-                    <span class="text-gray-500 text-sm">valutate</span>
-                </div>
-            </div>
-            <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-600">
-                <h3 class="text-gray-600 text-sm font-semibold mb-2">Valutazioni</h3>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-4xl font-bold text-blue-600">2024</span>
-                    <span class="text-gray-500 text-sm">anno</span>
-                </div>
-            </div>
-        </div>
-    </section>
+
 </main>
 @endsection

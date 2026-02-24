@@ -64,14 +64,14 @@
                                 <option value="false">Non estinto</option>
                             </select>
                         </div>
-                        
+
                     </div>
                     <div class="flex gap-3 mt-4">
                     <button type="submit" id="btn-apply-filters" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-sm font-semibold">✓ Applica Filtri</button>
                     <button type="reset" id="btn-reset-filters" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition text-sm font-semibold">↻ Ripristina</button>
                 </div>
                 </form><!-- Pulsanti Azione Filtri -->
-                
+
             </div>
         <div class="p-6 border-b border-gray-200 flex items-center justify-between">
             <h3 class="text-lg font-bold text-gray-800">📋 Valutazioni</h3><!-- Toggle Vista -->
@@ -87,19 +87,7 @@
                     </div>
                 </div>
             </div>
-            <div class="flex items-center gap-3 mt-4">
-                <label class="inline-flex items-center cursor-pointer select-none">
-                    <input id="mode-switch" type="checkbox" class="sr-only">
-                    <span class="w-11 h-6 bg-gray-200 rounded-full relative transition">
-                        <span id="mode-dot" class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition"></span>
-                    </span>
-                    <span class="ml-3 text-sm font-semibold text-gray-700">
-                        Scroll infinito
-                    </span>
-                </label>
 
-                <span id="mode-hint" class="text-sm text-gray-500"></span>
-            </div>
         </div>
         <div id="table-view" class="overflow-x-auto">
             <table class="w-full table-striped" id="assessments-table">
@@ -197,9 +185,9 @@
                 </div><!-- Pulsanti paginazione -->
                 <div class="flex it ems-center gap-2">
                     @if ( $headers['current-page'][0] > 1)
-                    <a href="{{ route('country', ['country' => $countryData['code'], 'page'=> ($headers['current-page'][0] > 1) ? $headers['current-page'][0] -1 : 1, 'per_page'=> isset($_GET['per_page']) ? $_GET['per_page'] : '' ]) }}" id="btn-prev" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition text-sm font-semibold">
-                        <i class="fas fa-chevron-left mr-2"></i>Precedente
-                    </a>
+                        <a href="{{ route('country', ['country' => $countryData['code'], 'page'=> ($headers['current-page'][0] > 1) ? $headers['current-page'][0] -1 : 1, 'per_page'=> isset($_GET['per_page']) ? $_GET['per_page'] : '' ]) }}" id="btn-prev" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition text-sm font-semibold">
+                            <i class="fas fa-chevron-left mr-2"></i>Precedente
+                        </a>
                     @endif
 
                     <div id="pagination-info" class="px-4 py-2 bg-white rounded-lg border border-gray-300 text-sm font-semibold text-gray-700 min-w-[150px] text-center">
@@ -214,52 +202,7 @@
      </div>
     </div>
 
-    <!-- Legenda categorie IUCN -->
-    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-        <div class="bg-gradient-to-r from-emerald-100 to-teal-100 p-6 border-b border-gray-200">
-        <h3 class="text-lg font-bold text-gray-800"><i class="fas fa-info-circle mr-2 text-teal-600"></i>Legenda Categorie IUCN Red List</h3>
-        </div>
-        <div class="p-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="flex items-center gap-3 p-3 bg-red-50 rounded-lg border border-red-200">
-                    <span class="inline-block px-3 py-1 bg-red-600 text-white text-xs font-bold rounded">EX</span>
-                    <span class="text-sm text-gray-700"><strong>Extinct</strong> - Estinto</span>
-                </div>
-                <div class="flex items-center gap-3 p-3 bg-red-50 rounded-lg border border-red-200">
-                    <span class="inline-block px-3 py-1 bg-red-600 text-white text-xs font-bold rounded">EW</span>
-                    <span class="text-sm text-gray-700"><strong>Extinct in the Wild</strong> - Estinto in natura</span>
-                </div>
-                <div class="flex items-center gap-3 p-3 bg-red-50 rounded-lg border border-red-200">
-                    <span class="inline-block px-3 py-1 bg-red-600 text-white text-xs font-bold rounded">CR</span>
-                    <span class="text-sm text-gray-700"><strong>Critically Endangered</strong> - In pericolo critico</span>
-                </div>
-                <div class="flex items-center gap-3 p-3 bg-orange-50 rounded-lg border border-orange-200">
-                    <span class="inline-block px-3 py-1 bg-orange-500 text-white text-xs font-bold rounded">EN</span>
-                    <span class="text-sm text-gray-700"><strong>Endangered</strong> - In pericolo</span>
-                </div>
-                <div class="flex items-center gap-3 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
-                    <span class="inline-block px-3 py-1 bg-yellow-500 text-white text-xs font-bold rounded">VU</span>
-                    <span class="text-sm text-gray-700"><strong>Vulnerable</strong> - Vulnerabile</span>
-                </div>
-                <div class="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                    <span class="inline-block px-3 py-1 bg-blue-500 text-white text-xs font-bold rounded">NT</span>
-                    <span class="text-sm text-gray-700"><strong>Near Threatened</strong> - Quasi minacciato</span>
-                </div>
-                <div class="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
-                    <span class="inline-block px-3 py-1 bg-green-600 text-white text-xs font-bold rounded">LC</span>
-                    <span class="text-sm text-gray-700"><strong>Least Concern</strong> - Minor preoccupazione</span>
-                </div>
-                <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                    <span class="inline-block px-3 py-1 bg-gray-500 text-white text-xs font-bold rounded">DD</span>
-                    <span class="text-sm text-gray-700"><strong>Data Deficient</strong> - Dati insufficienti</span>
-                </div>
-                <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                    <span class="inline-block px-3 py-1 bg-gray-400 text-white text-xs font-bold rounded">NE</span>
-                    <span class="text-sm text-gray-700"><strong>Not Evaluated</strong> - Non valutato</span>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('legenda')
 
   </main>
 

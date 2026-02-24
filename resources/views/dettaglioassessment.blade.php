@@ -1,11 +1,10 @@
-{{-- resources/views/dettagliovalutazione.blade.php --}}
 @extends('layouts.app')
 
 @section('content')
 @php
     $category = new App\Http\Controllers\CategoryController();
 
-    // ---- Helpers “safe” ----
+
     $assessmentId = data_get($assessment, 'assessment_id');
     $scientificName = data_get($assessment, 'taxon.scientific_name', '--');
 
@@ -13,15 +12,10 @@
     $iucnUrl = data_get($assessment, 'url');
 
     $populationTrendRaw = data_get($assessment, 'population_trend');
+
     // Mappatura trend (se arriva già descrittivo, lo stampiamo com'è)
     $populationTrendRaw = $populationTrendRaw['description'];
-    $trendMap = [
-        'increasing' => 'In aumento',
-        'decreasing' => 'In diminuzione',
-        'stable' => 'Stabile',
-        'unknown' => 'Sconosciuto',
-        'no_data' => 'Nessun dato'
-    ];
+
     $populationTrend = $populationTrendRaw
         ? ($trendMap[strtolower(trim($populationTrendRaw['en']))] ?? $populationTrendRaw)
         : '--';
@@ -39,7 +33,7 @@
 
     <div id="content-container" class="fade-in">
 
-        {{-- HEADER --}}
+
         <section class="bg-white rounded-xl shadow-lg p-8 mb-8">
             <div class="flex justify-between items-start mb-6">
                 <div class="flex-1">
@@ -54,9 +48,7 @@
                         {{ $scientificName }}
                     </h1>
 
-                    <p class="text-xl text-gray-600 mb-6">
-                        {{ $scientificName }}
-                    </p>
+
 
                     {{-- Link IUCN --}}
                     <div class="flex flex-wrap items-center gap-3">

@@ -32,7 +32,8 @@
             <table class="w-full">
                 <thead class="bg-emerald-700 text-white">
                     <tr>
-                        <th class="px-6 py-4 text-left text-sm font-bold">Assessment ID</th>
+                        <th class="px-6 py-4 text-left text-sm font-bold">ID Specie</th>
+                        <th class="px-6 py-4 text-left text-sm font-bold">Nome scientifico</th>
                         <th class="px-6 py-4 text-left text-sm font-bold">Data di aggiunta</th>
                         <th class="px-6 py-4 text-center text-sm font-bold">Link</th>
                     </tr>
@@ -43,6 +44,7 @@
                         @foreach($favorites as $fav)
                             @php
                                 $id = data_get($fav, 'assessment_id');
+                                $scname = data_get($fav, 'scientific_name');
                                 $addedAt = data_get($fav, 'added_at');
                                 $addedAtFmt = '--';
 
@@ -59,7 +61,9 @@
                                 <td class="px-6 py-4 text-sm text-gray-800 font-mono">
                                     {{ $id ?? '--' }}
                                 </td>
-
+                                <td class="px-6 py-4 text-sm text-gray-800 font-mono">
+                                    {{ $scname ?? '--' }}
+                                </td>
                                 <td class="px-6 py-4 text-sm text-gray-700">
                                     {{ $addedAtFmt }}
                                 </td>
