@@ -16,8 +16,7 @@ class IucnApiService
     public function __construct()
     {
         $this->baseUrl = rtrim(config('iucn.base_url'), '/');
-        //$this->token = config('iucn.token');
-        $this->token = 'VbbuhFMNq9gBeZuQhkQCH5veLoRsRuHJz2RW';
+        $this->token = config('iucn.token');
 
         if (!$this->token) {
             throw new \Exception("IUCN_API_TOKEN mancante in .env");

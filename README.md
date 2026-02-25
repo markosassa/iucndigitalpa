@@ -85,7 +85,9 @@ CONFIGURAZIONE API
 Nel file .env impostare:
 
 IUCN_API_TOKEN=your_token_here
+
 IUCN_BASE_URL=https://api.iucnredlist.org/api/v4/
+
 CACHE_DRIVER=file
 
 Dopo modifica eseguire:
@@ -173,18 +175,6 @@ Errore 404 API
 - Verificare endpoint /api/v4/
 - Verificare validità token
 - Verificare configurazione .env
-
-------------------------------------------------------------
-
-FINALITÀ ACCADEMICA
-
-Il progetto dimostra competenze in:
-
-- Architettura Laravel
-- Integrazione API REST
-- Gestione sicurezza HTTPS
-- Caching applicativo
-- Organizzazione codice modulare
 
 ------------------------------------------------------------
 
