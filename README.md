@@ -1,66 +1,192 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# IUCN Digital PA
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-11-red)
+![PHP](https://img.shields.io/badge/PHP-8.1%2B-blue)
+![Build](https://img.shields.io/badge/build-passing-brightgreen)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-## About Laravel
+------------------------------------------------------------
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+DESCRIZIONE DEL PROGETTO
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+IUCN Digital PA è un'applicazione web sviluppata in Laravel 11 
+che consente la consultazione e visualizzazione dei dati 
+della IUCN Red List API v4.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Il progetto è stato realizzato con finalità accademiche 
+per dimostrare competenze in:
 
-## Learning Laravel
+- Integrazione con API REST esterne
+- Gestione configurazione tramite .env
+- Service Layer Architecture
+- Caching Laravel
+- Paginazione dati
+- Separazione Controller / Service / View
+- Gestione errori HTTP
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+------------------------------------------------------------
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+STACK TECNOLOGICO
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- PHP 8.1+
+- Laravel 11
+- Node.js 18+
+- Vite
+- Bootstrap
+- jQuery
+- Guzzle HTTP Client
+- PHPUnit
 
-## Laravel Sponsors
+------------------------------------------------------------
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+REQUISITI DI SISTEMA
 
-### Premium Partners
+- PHP 8.1 o superiore
+- Composer
+- Node.js + npm
+- Estensioni PHP abilitate:
+    - curl
+    - openssl
+    - mbstring
+    - json
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+------------------------------------------------------------
 
-## Contributing
+INSTALLAZIONE
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1) Clonare il repository
 
-## Code of Conduct
+git clone <repo-url>
+cd iucndigitalpa
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+2) Installare dipendenze PHP
 
-## Security Vulnerabilities
+composer install
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+3) Installare dipendenze frontend
 
-## License
+npm install
+npm run dev
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Per produzione:
+
+npm run build
+
+4) Configurazione ambiente
+
+cp .env.example .env
+php artisan key:generate
+
+------------------------------------------------------------
+
+CONFIGURAZIONE API
+
+Nel file .env impostare:
+
+IUCN_API_TOKEN=your_token_here
+IUCN_BASE_URL=https://api.iucnredlist.org/api/v4/
+CACHE_DRIVER=file
+
+Dopo modifica eseguire:
+
+php artisan config:clear
+php artisan cache:clear
+
+------------------------------------------------------------
+
+CONFIGURAZIONE HTTPS (WINDOWS)
+
+Se si verificano errori SSL:
+
+1) Scaricare cacert.pem da:
+   https://curl.haxx.se/docs/caextract.html
+
+2) Copiarlo in:
+   C:\php\extras\ssl\
+
+3) Modificare php.ini:
+
+curl.cainfo = "C:\\php\\extras\\ssl\\cacert.pem"
+openssl.cafile = "C:\\php\\extras\\ssl\\cacert.pem"
+
+Riavviare il server web.
+
+------------------------------------------------------------
+
+AVVIO DEL PROGETTO
+
+php artisan serve
+
+Aprire nel browser:
+
+http://127.0.0.1:8000
+
+------------------------------------------------------------
+
+STRUTTURA PRINCIPALE
+
+app/
+ └── Services/
+     └── Iucn/
+         └── IucnApiService.php
+
+config/
+ └── iucn.php
+
+resources/
+ └── views/
+
+routes/
+ └── web.php
+
+------------------------------------------------------------
+
+GESTIONE CACHE
+
+Driver configurabile nel file .env:
+
+CACHE_DRIVER=file
+
+Supportati anche:
+- redis
+- database
+- array
+
+------------------------------------------------------------
+
+TEST
+
+php artisan test
+
+------------------------------------------------------------
+
+TROUBLESHOOTING
+
+Errore: cURL error 3
+- Verificare IUCN_BASE_URL
+- Verificare presenza token
+- Verificare che l'URL termini con "/"
+- Eseguire php artisan config:clear
+
+Errore 404 API
+- Verificare endpoint /api/v4/
+- Verificare validità token
+- Verificare configurazione .env
+
+------------------------------------------------------------
+
+FINALITÀ ACCADEMICA
+
+Il progetto dimostra competenze in:
+
+- Architettura Laravel
+- Integrazione API REST
+- Gestione sicurezza HTTPS
+- Caching applicativo
+- Organizzazione codice modulare
+
+------------------------------------------------------------
+
+Licenza: MIT
+Versione: 1.0.0

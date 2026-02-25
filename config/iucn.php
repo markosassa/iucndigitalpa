@@ -10,21 +10,7 @@ return [
         'default_ttl' => 300,
     ],
 
-    'systems' => [
-        'terrestrial' => 'Terrestre',
-        'freshwater'  => 'Acque interne',
-        'marine'      => 'Marino',
-    ],
 
-    'categories' => [
-        'EX' => 'Estinto',
-        'EW' => 'Estinto in natura',
-        'CR' => 'In pericolo critico',
-        'EN' => 'In pericolo',
-        'VU' => 'Vulnerabile',
-        'NT' => 'Quasi minacciato',
-        'LC' => 'Rischio minimo',
-        'DD' => 'Dati insufficienti',
-        'NE' => 'Non valutato',
-    ],
+
+
 ];
